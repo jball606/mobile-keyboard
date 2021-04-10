@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
-I am a scala developer, so I figured out how to use this in Java though I would have had it done
+I am a scala developer, so I figured out how to do this in Java, though I would have had it done
 quicker and in a lot less code had I used something more advanced.
 It felt like I was working with stone knives and bearskins
  http://www.webster-dictionary.org/definition/stone+knives+and+bearskins
@@ -85,13 +85,13 @@ class AutocompleteProvider {
         Candidate[] cleanlist =  Arrays
                 .stream(dictionary)
                 .filter(i ->
-                        i.getWord().contains(fragment.toLowerCase())  //I started with the only checking first letters, but made it smarter to check all patterns
+                        i.getWord().contains(fragment.toLowerCase())  //I started with only checking front of the word, (nee) would get a result, but made it smarter to check all patterns (eed)
                 ) //feeling a little at home, filter that data
                 .toArray(Candidate[]::new);
 
 
         //weird way to do a groupedBy but Java doesn't have that one yet, so I get
-        //the confidence numbers so I can ord by them first and order by Alpha second
+        //the confidence numbers so I can ord by them first and order by alpha second
 
         Integer[] confidence_numbers = Arrays.stream(cleanlist).map(Candidate::getConfidence).distinct().sorted(Comparator.reverseOrder()).toArray(Integer[]::new);
         for(count=0;count<confidence_numbers.length;count++) {
@@ -115,14 +115,14 @@ class AutocompleteProvider {
     void train(String passage) {
         String clean_passage = passage.replace(".","")
                 .replace(",","")
-                .replace(";","");  //Need to remove sentence structure for better matching
+                .replace(";","");  //Need to remove sentence structure for better matching, I am sure there is a regex somewhere that does this too.
 
-        String[] words = clean_passage.toLowerCase().split(" "); //Split by space and lowercase so search works
+        String[] words = clean_passage.toLowerCase().split(" "); //Split by space and lowercase so search works better
 
         dictionary = Arrays  //I am going to scala this thing the best I can
                 .stream(words)
                 .distinct() //Need a unique list
-                .filter(i -> i.length() >2 ) //Don't waste my time with words less then 2 characters
+                .filter(i -> i.length() > 2 ) //Don't waste my time with words less then 2 characters
                 .map( my_word -> new Candidate(my_word, Arrays.stream(words).filter(i -> i.equals(my_word)).toArray(String[]::new).length))
                 .toArray(Candidate[]::new);
 
